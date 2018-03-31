@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "outDir": "./",
+    "rootDir": ".",
+    "sourceMap": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    "declaration": false,
+    "noEmit": false
+  },
+  "exclude": [
+    "node_modules"
+  ],
+  "files": [
+    "./index.ts"
+  ],
+  "compileOnSave": false,
+  "buildOnSave": false
+}
