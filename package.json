@@ -7,10 +7,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+"
+    "url": "git+https://github.com/aakashbh2/js-algorithms.git"
   },
   "bugs": {
-    "url": ""
+    "url": "https://github.com/aakashbh2/js-algorithms/issues"
   },
   "scripts": {
     "build": "rimraf dist && webpack --progress",

@@ -1,2 +1,6 @@
 .DS_Store
 .git
+node_modules/
+index.js
+js-algorithms.js
+js-algorithms.map
