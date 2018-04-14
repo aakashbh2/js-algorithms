@@ -136,6 +136,9 @@ function heapify(array, length, index) {
 
 //SEE WHY SORT DOES NOT WORK
 export function cycleSort(data: Array<any>, showComplexity: boolean = false) {
+        if (!isArray(data)) {
+            return data;
+        }
         var writes = 0;
         var length =data.length;
 
@@ -190,6 +193,9 @@ export function cycleSort(data: Array<any>, showComplexity: boolean = false) {
 }
 
 export function quickSort(data: Array<any>, startingIndex: number = 0, endIndex: number = data.length - 1, showComplexity: boolean = false) {
+    if (!isArray(data)) {
+        return data;
+    }
     if (startingIndex < endIndex) {
         var pi = partition(data, startingIndex, endIndex);
 
@@ -212,4 +218,158 @@ function partition (array, low, high) {
     }
     swap(array ,i + 1, high);
     return (i + 1);
+}
+
+export function countingSort(data: Array<any>, showComplexity: boolean = false) {
+  if (!isArray(data)) {
+      return data;
+  }
+  var bucket = [], idx = 0;
+
+  for(var i = 0;i<data.length;i++) {
+    bucket[data[i]] = bucket[data[i]] || 0
+    bucket[data[i]]++ ;
+  }
+
+  for(i = 0; i< bucket.length;i++) {
+    while(bucket[i] && bucket[i] > 0) {
+      data[idx++] = i;
+      bucket[i]--;
+    }
+  }
+  showComplexity ? console.log("worst case scenario = O(n+k) where n is the number of elements in input array and k is the range of input.") : "" ;
+  return data;
+}
+
+//Bucket size is
+export function bucketSort(data: Array<any>, bucketSize: number = 200, showComplexity: boolean = false) {
+  if (!isArray(data)) {
+      return data;
+  }
+  var i,
+      minValue = data[0],
+      maxValue = data[0],
+      bucketSize = bucketSize;
+
+  data.forEach(currentVal => {
+    if (currentVal < minValue) {
+      minValue = currentVal;
+    } else if (currentVal > maxValue) {
+      maxValue = currentVal;
+    }
+  });
+
+  // Initializing buckets
+  var bucketCount = Math.floor((maxValue - minValue) / bucketSize) + 1;
+  var allBuckets = new Array(bucketCount);
+
+  for (i = 0; i < allBuckets.length; i++) {
+    allBuckets[i] = [];
+  }
+
+  // Pushing values to buckets
+  data.forEach(function (currentVal) {
+  	allBuckets[Math.floor((currentVal - minValue) / bucketSize)].push(currentVal);
+  });
+
+  // Sorting buckets
+  data.length = 0;
+
+  allBuckets.forEach(bucket => {
+    insertionSort(bucket);
+  	bucket.forEach(element => {
+      data.push(element);
+    });
+  });
+  showComplexity ? console.log("The complexity of bucket sort isn’t constant depending on the input. It's worst-case performance is Θ(n^2).") : "" ;
+  return data;
+}
+
+export function radixSort(data: Array<any>, showComplexity: boolean = false) {
+  if (!isArray(data)) {
+      return data;
+  }
+  var max = Math.floor((Math.log(Math.max(...data))) / Math.LN10 ),
+      // get the length of digits of the max value in this array
+      digitBuckets = [],
+      id = 0;
+
+  for(var i = 0; i < max + 1; i++) {
+
+    digitBuckets = [];
+    for(var j = 0;j<data.length;j++){
+      var digit = getNthDigit(data[j],i+1);
+
+      digitBuckets[digit] = digitBuckets[digit] || [];
+      digitBuckets[digit].push(data[j]);
+    }
+
+    id = 0;
+    for(var t = 0; t< digitBuckets.length;t++){
+      if(digitBuckets[t] && digitBuckets[t].length > 0){
+        for(j = 0;j<digitBuckets[t].length;j++){
+          data[id++] = digitBuckets[t][j];
+        }
+      }
+    }
+  }
+  showComplexity ? console.log("worst case scenario = Θ(nk)") : "" ;
+  return data;
+}
+
+function getNthDigit(num, nth) {
+  // get last nth digit of a number
+  var ret = 0;
+  while(nth--){
+    ret = num % 10;
+    num = Math.floor((num - ret) / 10);
+  }
+  return ret;
+}
+
+export function shellSort(data: Array<any>, showComplexity: boolean = false) {
+  if (!isArray(data)) {
+      return data;
+  }
+  var n = data.length;
+  for (var gap = Math.floor(n/2); gap > 0; gap = Math.floor(gap/2)) {
+          for (var i = gap; i < n; i += 1) {
+              var temp = data[i];
+              for (var j = i; j >= gap && data[j - gap] > temp; j -= gap) {
+                  data[j] = data[j - gap];
+              }
+              data[j] = temp;
+          }
+      }
+    showComplexity ? console.log("worst case scenario = Θ(n^2)") : "" ;
+    return data;
+}
+
+export function combSort(data: Array<any>, showComplexity: boolean = false) {
+  if (!isArray(data)) {
+      return data;
+  }
+  var gap = data.length;
+    var swapped = true;
+
+    while (gap != 1 || swapped === true) {
+        gap = getNextGap(gap);
+        swapped = false;
+        for (var i=0; i< data.length - gap; i++) {
+            if (data[i] > data[i+gap]) {
+                swap(data ,i, i+gap);
+                swapped = true;
+            }
+        }
+    }
+    showComplexity ? console.log("worst case scenario = Θ(n^2)") : "" ;
+    return data;
+}
+
+function getNextGap(gap) {
+    gap = (gap*10)/13;
+    if (gap < 1) {
+        return 1;
+    }
+    return gap;
 }
